@@ -25,13 +25,14 @@ class settings(commands.Cog):
         self,
         ctx: ApplicationContext
     ):
-        latency = self.bot.latency
         embed = Embed(
             title='Settings',
-            description=f'{latency * 1000:.2f} ms ({latency:.2f} s)',
             color=0xFFA46E
         )
-        await ctx.respond(embed=embed)
+        await ctx.respond(
+            embed=embed,
+            ephemeral=True
+        )
 
 
 def setup(bot):
