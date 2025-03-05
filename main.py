@@ -14,6 +14,7 @@ async def on_ready():
 if __name__ == '__main__':
     extensions = [
         'cogs.ping',
+        'cogs.save_address',
 
     ]
     for extension in extensions:
