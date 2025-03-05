@@ -9,8 +9,8 @@ class save_address(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(
-        name='save_address',
-        description='Save the addresses to monitor (max 5)',
+        name='settings',
+        description='Set the addresses to monitor (max 5) and other info',
         integration_types=[
             IntegrationType.user_install,
             IntegrationType.guild_install,
@@ -27,7 +27,7 @@ class save_address(commands.Cog):
     ):
         latency = self.bot.latency
         embed = Embed(
-            title='Bot Latency',
+            title='Settings',
             description=f'{latency * 1000:.2f} ms ({latency:.2f} s)',
             color=0xFFA46E
         )
