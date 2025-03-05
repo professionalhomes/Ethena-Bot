@@ -4,7 +4,7 @@ from discord import (ApplicationContext, Embed, IntegrationType,
 from discord.ext import commands
 
 
-class save_address(commands.Cog):
+class settings(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -21,7 +21,7 @@ class save_address(commands.Cog):
             InteractionContextType.private_channel,
         ],
     )
-    async def save_address(
+    async def settings(
         self,
         ctx: ApplicationContext
     ):
@@ -35,4 +35,4 @@ class save_address(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(save_address(bot))
+    bot.add_cog(settings(bot))
