@@ -3,6 +3,8 @@ from discord import (ApplicationContext, Embed, IntegrationType,
                      InteractionContextType)
 from discord.ext import commands
 
+from view.settings_view import SettingsView
+
 
 class settings(commands.Cog):
     def __init__(self, bot):
@@ -31,6 +33,7 @@ class settings(commands.Cog):
         )
         await ctx.respond(
             embed=embed,
+            view=SettingsView(),
             ephemeral=True
         )
 
