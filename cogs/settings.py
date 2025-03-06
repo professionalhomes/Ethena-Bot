@@ -29,7 +29,8 @@ class settings(commands.Cog):
     ):
         embed = Embed(
             title='Settings',
-            color=0xFFA46E
+            color=0xFFA46E,
+            description='Click the button to enter the address you want to monitor, or select other settings from the dropdown menu.'
         )
         await ctx.respond(
             embed=embed,

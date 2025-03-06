@@ -6,7 +6,7 @@ from utils.record_manager import RecordManager
 
 class AddressModal(Modal):
     def __init__(self, uid):
-        super().__init__(title='Ethereum addresses. Enter 0 to remove old one')
+        super().__init__(title='Enter Ethereum addresses.')
         records = RecordManager.readRecord(uid)
         address_ct = len(records)
         
@@ -15,7 +15,6 @@ class AddressModal(Modal):
                 address = list(records.keys())[i]
             else:
                 address = '0x...'
-            print(address)
 
             inp = InputText(
                 label=f'Enter Ethereum address.',
@@ -31,18 +30,27 @@ class AddressModal(Modal):
     async def callback(self, interaction):
         uid = str(interaction.user.id)
         inputs = [child.value for child in self.children if isinstance(child, InputText)]
-        new_record = {}
+        new_records = {}
         old_records = RecordManager.readRecord(uid)
+        print(f'inputs is {inputs}')
+        if old_records:
+            for index, new_address in enumerate(inputs):
+                if new_address in new_records or new_address == '0x0000000000000000000000000000000000000000':
+                    continue
 
-        for index, input in enumerate(inputs):
-            if input in new_record or input == '0':
-                pass
-            if input == '' or input in old_records:
-                new_record[input] = old_records[input]
-            else:
-                new_record[input] = {}
+                elif new_address == '': # keep old address and data
+                    if index < len(old_records):
+                        old_address = list(old_records.keys())[index]
+                        new_records[old_address] = old_records[old_address]
+
+                elif new_address in old_records: # keep old data
+                    new_records[new_address] = old_records[new_address]
+
+                else:
+                    new_records[new_address] = {}
+        
             
-        print(new_record)
+        print(new_records)
 
 class SettingsView(View):
     def __init__(self):
