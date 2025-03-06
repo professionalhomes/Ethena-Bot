@@ -5,7 +5,7 @@ from datetime import datetime, timedelta, timezone
 import discord
 from dotenv import load_dotenv
 
-from utils.fetch_data import fetchData
+from utils.fetch_data import sendDM
 
 intents = discord.Intents.default()
 bot = discord.Bot(intents=intents)
@@ -20,7 +20,7 @@ async def on_ready():
 async def daily_task():
     while True:
         now = datetime.now()
-        target_time = datetime(now.year, now.month, now.day, 20, 22, 30)
+        target_time = datetime(now.year, now.month, now.day, 20, 57, 00)
 
         if now >= target_time:
             target_time += timedelta(days=1)
@@ -28,7 +28,7 @@ async def daily_task():
         wait_time = (target_time - now).total_seconds()
         print(f'Wait {wait_time} sec to fetch data')
         await asyncio.sleep(wait_time)
-        await fetchData(bot)
+        await sendDM(bot)
 
 
 if __name__ == '__main__':
