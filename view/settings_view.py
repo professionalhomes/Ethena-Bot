@@ -21,18 +21,28 @@ class AddressModal(Modal):
                 label=f'Enter Ethereum address.',
                 placeholder=address,
                 style=InputTextStyle.short,
-                min_length=40,
-                max_length=40,
+                min_length=42,
+                max_length=42,
                 required=False
             )
 
             self.add_item(inp)
 
     async def callback(self, interaction):
-        mid = interaction.user.id
+        uid = str(interaction.user.id)
         inputs = [child.value for child in self.children if isinstance(child, InputText)]
-        print(inputs)
+        new_record = {}
+        old_records = RecordManager.readRecord(uid)
 
+        for index, input in enumerate(inputs):
+            if input in new_record or input == '0':
+                pass
+            if input == '' or input in old_records:
+                new_record[input] = old_records[input]
+            else:
+                new_record[input] = {}
+            
+        print(new_record)
 
 class SettingsView(View):
     def __init__(self):
