@@ -20,7 +20,7 @@ async def on_ready():
 async def daily_task():
     while True:
         now = datetime.now()
-        target_time = datetime(now.year, now.month, now.day, 20, 57, 00)
+        target_time = datetime(now.year, now.month, now.day, 21, 5, 40)
 
         if now >= target_time:
             target_time += timedelta(days=1)

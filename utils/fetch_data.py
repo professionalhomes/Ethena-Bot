@@ -40,18 +40,23 @@ contract = w3.eth.contract(
 
 def getSusdeBalance(address):
     balance = contract.functions.balanceOf(address).call()
-    balance_display = balance / (10 ** 18)
     timestamp = time.time()
+    return (timestamp, balance)
 
-    return (timestamp, balance_display)
+def convertToUsde(balance):
+    usde_balance = contract.functions.convertToAssets(balance).call()
+    usde_balance_display = usde_balance / (10 ** 18)
+    return usde_balance_display
 
 
 async def sendDM(bot):
     user = await bot.fetch_user(874806243208871977)
     if user:
         try:
-            (timestamp, balance) = getSusdeBalance('0x9f015B246a6bC257B1205c9df1c03db75DB518aA')
-            await user.send(f'{timestamp} {balance}')
+            (timestamp, susde_balance) = getSusdeBalance('0x9f015B246a6bC257B1205c9df1c03db75DB518aA')
+            usde_balance = convertToUsde(susde_balance)
+
+            await user.send(f'{timestamp} {susde_balance} {usde_balance}')
 
         except discord.Forbidden:
             print('DM closed')
