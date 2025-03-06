@@ -5,6 +5,8 @@ from datetime import datetime, timedelta, timezone
 import discord
 from dotenv import load_dotenv
 
+from utils.fetch_data import fetchData
+
 intents = discord.Intents.default()
 bot = discord.Bot(intents=intents)
 tz = timezone(timedelta(hours=8))
@@ -18,7 +20,7 @@ async def on_ready():
 async def daily_task():
     while True:
         now = datetime.now()
-        target_time = datetime(now.year, now.month, now.day, 17, 48, 30)
+        target_time = datetime(now.year, now.month, now.day, 20, 22, 30)
 
         if now >= target_time:
             target_time += timedelta(days=1)
@@ -26,19 +28,7 @@ async def daily_task():
         wait_time = (target_time - now).total_seconds()
         print(f'Wait {wait_time} sec to fetch data')
         await asyncio.sleep(wait_time)
-        await fetchData()
-
-
-async def fetchData():
-    user = await bot.fetch_user(874806243208871977)
-    if user:
-        try:
-            await user.send('data')
-            print(f"DM sent {user}, time: {datetime.now(tz).strftime('%Y-%m-%d %H:%M:%S')}")
-        except discord.Forbidden:
-            print('DM closed')
-    else:
-        print('User not found')
+        await fetchData(bot)
 
 
 if __name__ == '__main__':
