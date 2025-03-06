@@ -13,7 +13,20 @@ class RecordManager:
         if uid: return record.get(uid)
         return record
 
-    # def updateAddress(uid, addresses):
-    #     record = RecordManager.readRecord(addresses)
+    def updateRecord(uid, new_record):
+        record = RecordManager.readRecord();
+        record[uid] = new_record
+
+        with open(
+            'record.json',
+            'w',
+            encoding='utf-8',
+        ) as file:
+            json.dump(
+                record,
+                file,
+                ensure_ascii=False,
+                indent=4
+            )
         
         

@@ -1,4 +1,5 @@
-from discord import ButtonStyle, InputTextStyle, Interaction, PartialEmoji
+from discord import (ButtonStyle, Embed, InputTextStyle, Interaction,
+                     PartialEmoji)
 from discord.ui import Button, InputText, Modal, View, button
 
 from utils.record_manager import RecordManager
@@ -32,7 +33,6 @@ class AddressModal(Modal):
         inputs = [child.value for child in self.children if isinstance(child, InputText)]
         new_records = {}
         old_records = RecordManager.readRecord(uid)
-        print(f'inputs is {inputs}')
         if old_records:
             for index, new_address in enumerate(inputs):
                 if new_address in new_records or new_address == '0x0000000000000000000000000000000000000000':
@@ -46,11 +46,23 @@ class AddressModal(Modal):
                 elif new_address in old_records: # keep old data
                     new_records[new_address] = old_records[new_address]
 
-                else:
+                else: # add new address, empty data
                     new_records[new_address] = {}
         
-            
-        print(new_records)
+        RecordManager.updateRecord(uid, new_records)
+        
+        new_addresses_text = ''
+        for na in new_records.keys():
+            new_addresses_text += na
+            if na != list[-1]:
+                new_addresses_text += '\n'
+        embed = Embed(
+            title='Success',
+            color=0xFFA46E,
+            description=f'The bot is now monitoring the following addresses:\n{new_addresses_text}'
+        )
+        await interaction.respond(embed=embed, ephemeral=True)
+
 
 class SettingsView(View):
     def __init__(self):
