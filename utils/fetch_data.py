@@ -81,15 +81,15 @@ async def sendDM(bot, timestamp):
 
                     embed.add_field(
                         name='Yesterday',
-                        value=f'{yesterday['susde_balance']:.4f} sUSDe = {yesterday['usde_balance']:.4f} USDe'
+                        value=f'{yesterday["susde_balance"]:.4f} sUSDe = {yesterday["usde_balance"]:.4f} USDe'
                     )
                     embed.add_field(
                         name='Today',
-                        value=f'{today['susde_balance']:.4f} sUSDe = {today['usde_balance']:.4f} USDe'
+                        value=f'{today["susde_balance"]:.4f} sUSDe = {today["usde_balance"]:.4f} USDe'
                     )
                     embed.add_field(
                         name='Daily Profit',
-                        value=f'{today['usde_balance'] - yesterday['usde_balance']:.4f} USDe',
+                        value=f'{today["usde_balance"] - yesterday["usde_balance"]:.4f} USDe',
                         inline=False
                     )
                 else:
@@ -100,7 +100,7 @@ async def sendDM(bot, timestamp):
                     )
                     embed.add_field(
                         name='Today',
-                        value=f'{today['susde_balance']:.4f} sUSDe = {today['usde_balance']:.4f} USDe'
+                        value=f'{today["susde_balance"]:.4f} sUSDe = {today["usde_balance"]:.4f} USDe'
                     )
                     embed.add_field(
                         name='Daily Profit',
