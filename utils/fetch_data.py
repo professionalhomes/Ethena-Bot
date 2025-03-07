@@ -1,6 +1,7 @@
 import os
 
 import discord
+from discord import Embed
 from dotenv import load_dotenv
 from web3 import Web3
 
@@ -49,19 +50,33 @@ def convertToUsde(balance):
     return usde_balance_display
 
 
-async def sendDM(bot, target_time):
-    record = RecordManager.readRecord()
+async def sendDM(bot, timestamp):
+    records = RecordManager.readRecord()
 
-    for user in record:
-        user = await bot.fetch_user(int(user))
+    for user in records:
+        dm_user = await bot.fetch_user(int(user))
         if user:
-            try:
-                susde_balance = getSusdeBalance('0x9f015B246a6bC257B1205c9df1c03db75DB518aA')
+            embed = Embed(
+                title='sUSDe Daily Profit',
+                color=0xFFA46E,
+            )
+            for address in records[user]:
+                susde_balance = getSusdeBalance(address)
                 usde_balance = convertToUsde(susde_balance)
+                susde_balance = susde_balance / (10 ** 18)
+                print(f'{susde_balance} {usde_balance}')
+                RecordManager.updateBalance(
+                    user,
+                    address,
+                    timestamp,
+                    susde_balance,
+                    usde_balance
+                )
 
-                await user.send(f'{susde_balance} {usde_balance}')
+            try:
+                await dm_user.send(embed=embed)
 
             except discord.Forbidden:
                 print('DM closed')
-    else:
-        print('User not found')
+        else:
+            print('User not found')

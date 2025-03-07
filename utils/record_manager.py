@@ -29,4 +29,26 @@ class RecordManager:
                 indent=4
             )
         
-    
+    def updateBalance(uid, address, timestamp, susde_balance, usde_balance):
+        with open(
+            'record.json',
+            'r',
+            encoding='utf-8'
+        ) as file:
+            record = json.load(file)
+            record[uid][address][timestamp] = {
+                'susde_balance': susde_balance,
+                'usde_balance': usde_balance,
+            }
+
+        with open(
+            'record.json',
+            'w',
+            encoding='utf-8',
+        ) as file:
+            json.dump(
+                record,
+                file,
+                ensure_ascii=False,
+                indent=4
+            )

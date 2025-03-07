@@ -21,7 +21,7 @@ async def daily_task():
     while True:
         tz = timezone(timedelta(hours=8))
         now = datetime.now(tz)
-        target_time = datetime(now.year, now.month, now.day, 21, 5, 40, tzinfo=tz)
+        target_time = datetime(now.year, now.month, now.day, 12, 7, 50, tzinfo=tz)
 
         if now >= target_time:
             target_time += timedelta(days=1)
@@ -29,7 +29,7 @@ async def daily_task():
         wait_time = (target_time - now).total_seconds()
         print(f'Wait {wait_time} sec to fetch data')
         await asyncio.sleep(wait_time)
-        await sendDM(bot, target_time)
+        await sendDM(bot, int(target_time.timestamp()))
 
 
 if __name__ == '__main__':
