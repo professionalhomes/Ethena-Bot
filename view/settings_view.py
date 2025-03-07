@@ -34,22 +34,26 @@ class AddressModal(Modal):
         inputs = [child.value for child in self.children if isinstance(child, InputText)]
         new_records = {}
         old_records = RecordManager.readRecord(uid)
-        if old_records:
-            for index, new_address in enumerate(inputs):
-                if new_address in new_records or new_address == '0x0000000000000000000000000000000000000000':
-                    continue
+        old_address_ct = 0
+        if old_records: old_address_ct = len(old_records)
 
-                elif new_address == '': # keep old address and data
-                    if index < len(old_records):
-                        old_address = list(old_records.keys())[index]
-                        new_records[old_address] = old_records[old_address]
+        for index, new_address in enumerate(inputs):
+            if new_address in new_records or new_address == '0x0000000000000000000000000000000000000000':
+                continue
 
-                elif new_address in old_records: # keep old data
-                    new_records[new_address] = old_records[new_address]
+            elif new_address == '': # keep old address and data
+                if index < old_address_ct:
+                    old_address = list(old_records.keys())[index]
+                    new_records[old_address] = old_records[old_address]
 
-                else: # add new address, empty data
-                    new_records[new_address] = {}
-        
+            elif old_records and (new_address in old_records): # keep old data
+                new_records[new_address] = old_records[new_address]
+
+            else: # add new address
+                new_records[new_address] = {}
+
+
+        print(new_records)
         RecordManager.updateRecord(uid, new_records)
         
         new_addresses_text = ''
