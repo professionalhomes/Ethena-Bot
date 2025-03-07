@@ -19,7 +19,8 @@ async def on_ready():
 
 async def daily_task():
     while True:
-        now = datetime.now()
+        tz = timezone(timedelta(hours=8))
+        now = datetime.now(tz)
         target_time = datetime(now.year, now.month, now.day, 21, 5, 40)
 
         if now >= target_time:
@@ -28,7 +29,7 @@ async def daily_task():
         wait_time = (target_time - now).total_seconds()
         print(f'Wait {wait_time} sec to fetch data')
         await asyncio.sleep(wait_time)
-        await sendDM(bot)
+        await sendDM(bot, target_time)
 
 
 if __name__ == '__main__':
