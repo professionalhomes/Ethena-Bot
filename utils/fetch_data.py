@@ -56,23 +56,39 @@ async def sendDM(bot, timestamp):
     for user in records:
         dm_user = await bot.fetch_user(int(user))
         if user:
-            embed = Embed(
-                title='sUSDe Daily Profit',
-                color=0xFFA46E,
-            )
             for address in records[user]:
                 susde_balance = getSusdeBalance(address)
                 usde_balance = convertToUsde(susde_balance)
                 susde_balance = susde_balance / (10 ** 18)
                 print(f'{susde_balance} {usde_balance}')
-                RecordManager.updateBalance(
+                new_records = RecordManager.updateBalance(
                     user,
                     address,
                     timestamp,
                     susde_balance,
                     usde_balance
                 )
-
+                (yesterday, today) = (
+                    new_records[list(new_records.keys())[-2]],
+                    new_records[list(new_records.keys())[-1]]
+                )
+                print(yesterday)
+                embed = Embed(
+                    title='sUSDe Daily Profit',
+                    color=0xFFA46E,
+                )
+                embed.add_field(
+                    name='Yesterday',
+                    value=f'{yesterday['susde_balance']} sUSDe = {yesterday['usde_balance']:.4f} USDe'
+                )
+                embed.add_field(
+                    name='Today',
+                    value=f'{today['susde_balance']} sUSDe = {today['usde_balance']:.4f} USDe'
+                )
+                embed.add_field(
+                    name='Daily Profit',
+                    value=f'{today['usde_balance'] - yesterday['usde_balance']:.4f} USDe'
+                )
             try:
                 await dm_user.send(embed=embed)
 

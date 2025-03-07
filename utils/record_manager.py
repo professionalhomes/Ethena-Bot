@@ -56,3 +56,5 @@ class RecordManager:
                 ensure_ascii=False,
                 indent=4
             )
+        
+        return record[uid][address]
