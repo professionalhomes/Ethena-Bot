@@ -68,31 +68,48 @@ async def sendDM(bot, timestamp):
                     susde_balance,
                     usde_balance
                 )
-                (yesterday, today) = (
-                    new_records[list(new_records.keys())[-2]],
-                    new_records[list(new_records.keys())[-1]]
-                )
-                print(yesterday)
                 embed = Embed(
-                    title='sUSDe Daily Profit',
+                    title=f'sUSDe Daily Profit',
+                    description=f'Address: {address}',
                     color=0xFFA46E,
                 )
-                embed.add_field(
-                    name='Yesterday',
-                    value=f'{yesterday['susde_balance']} sUSDe = {yesterday['usde_balance']:.4f} USDe'
-                )
-                embed.add_field(
-                    name='Today',
-                    value=f'{today['susde_balance']} sUSDe = {today['usde_balance']:.4f} USDe'
-                )
-                embed.add_field(
-                    name='Daily Profit',
-                    value=f'{today['usde_balance'] - yesterday['usde_balance']:.4f} USDe'
-                )
-            try:
-                await dm_user.send(embed=embed)
+                if len(new_records) >= 2:
+                    (yesterday, today) = (
+                        new_records[list(new_records.keys())[-2]],
+                        new_records[list(new_records.keys())[-1]]
+                    )
 
-            except discord.Forbidden:
-                print('DM closed')
+                    embed.add_field(
+                        name='Yesterday',
+                        value=f'{yesterday['susde_balance']:.4f} sUSDe = {yesterday['usde_balance']:.4f} USDe'
+                    )
+                    embed.add_field(
+                        name='Today',
+                        value=f'{today['susde_balance']:.4f} sUSDe = {today['usde_balance']:.4f} USDe'
+                    )
+                    embed.add_field(
+                        name='Daily Profit',
+                        value=f'{today['usde_balance'] - yesterday['usde_balance']:.4f} USDe',
+                        inline=False
+                    )
+                else:
+                    today = new_records[list(new_records.keys())[-1]]
+                    embed.add_field(
+                        name='Yesterday',
+                        value=f'Data not available, come back tomorrow.'
+                    )
+                    embed.add_field(
+                        name='Today',
+                        value=f'{today['susde_balance']:.4f} sUSDe = {today['usde_balance']:.4f} USDe'
+                    )
+                    embed.add_field(
+                        name='Daily Profit',
+                        value=f'Data not available, come back tomorrow.',
+                        inline=False
+                    )
+                try:
+                    await dm_user.send(embed=embed)
+                except discord.Forbidden:
+                    print('DM closed')
         else:
             print('User not found')
