@@ -9,7 +9,8 @@ class AddressModal(Modal):
     def __init__(self, uid):
         super().__init__(title='Enter Ethereum addresses.')
         records = RecordManager.readRecord(uid)
-        address_ct = len(records)
+        address_ct = 0
+        if records: address_ct = len(records)
         
         for i in range(5):
             if i < address_ct:

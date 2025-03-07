@@ -4,6 +4,8 @@ import discord
 from dotenv import load_dotenv
 from web3 import Web3
 
+from utils.record_manager import RecordManager
+
 load_dotenv()
 WEB3_PROVIDER_URI = os.getenv('WEB3_PROVIDER_URI')
 w3 = Web3(Web3.HTTPProvider(WEB3_PROVIDER_URI))
@@ -48,15 +50,18 @@ def convertToUsde(balance):
 
 
 async def sendDM(bot, target_time):
-    user = await bot.fetch_user(874806243208871977)
-    if user:
-        try:
-            susde_balance = getSusdeBalance('0x9f015B246a6bC257B1205c9df1c03db75DB518aA')
-            usde_balance = convertToUsde(susde_balance)
+    record = RecordManager.readRecord()
 
-            await user.send(f'{susde_balance} {usde_balance}')
+    for user in record:
+        user = await bot.fetch_user(int(user))
+        if user:
+            try:
+                susde_balance = getSusdeBalance('0x9f015B246a6bC257B1205c9df1c03db75DB518aA')
+                usde_balance = convertToUsde(susde_balance)
 
-        except discord.Forbidden:
-            print('DM closed')
+                await user.send(f'{susde_balance} {usde_balance}')
+
+            except discord.Forbidden:
+                print('DM closed')
     else:
         print('User not found')

@@ -21,7 +21,7 @@ async def daily_task():
     while True:
         tz = timezone(timedelta(hours=8))
         now = datetime.now(tz)
-        target_time = datetime(now.year, now.month, now.day, 21, 5, 40)
+        target_time = datetime(now.year, now.month, now.day, 21, 5, 40, tzinfo=tz)
 
         if now >= target_time:
             target_time += timedelta(days=1)
