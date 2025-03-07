@@ -36,6 +36,10 @@ class RecordManager:
             encoding='utf-8'
         ) as file:
             record = json.load(file)
+            if len(record[uid][address]) >= 30:
+                min_key = min(record[uid][address], key=lambda k: int(k))
+                del record[uid][address][min_key]
+
             record[uid][address][timestamp] = {
                 'susde_balance': susde_balance,
                 'usde_balance': usde_balance,
