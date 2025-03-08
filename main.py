@@ -27,7 +27,7 @@ async def daily_task():
             target_time += timedelta(days=1)
 
         wait_time = (target_time - now).total_seconds()
-        print(f'Wait {wait_time} sec to fetch data')
+        print(f'current time: {now}\nfetch data at: {target_time}({wait_time} sec later)')
         await asyncio.sleep(wait_time)
         await sendDM(bot, int(target_time.timestamp()))
 
