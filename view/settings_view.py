@@ -63,7 +63,7 @@ class AddressModal(Modal):
                 new_addresses_text += '\n'
         embed = Embed(
             title='Success',
-            color=0xFFA46E,
+            color=0x91B3F0,
             description=f'The bot is now monitoring the following addresses:\n{new_addresses_text}'
         )
         await interaction.respond(embed=embed, ephemeral=True)

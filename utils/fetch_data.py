@@ -71,7 +71,7 @@ async def sendDM(bot, timestamp):
                 embed = Embed(
                     title=f'sUSDe Daily Profit',
                     description=f'Address: {address}',
-                    color=0xFFA46E,
+                    color=0x91B3F0,
                 )
                 if len(new_records) >= 2:
                     (yesterday, today) = (
