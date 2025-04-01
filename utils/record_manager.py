@@ -1,6 +1,7 @@
 import json
 
 
+
 class RecordManager:
     def readRecord(uid=None):
         with open(
